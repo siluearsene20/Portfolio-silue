@@ -86,6 +86,9 @@ function App() {
       <section className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-6xl items-center py-20" aria-labelledby="hero-title">
         <div className="grid w-full items-center gap-16 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
+            <blockquote className="mb-8 max-w-2xl border-l-2 border-[var(--accent)] pl-5 font-mono text-base leading-8 text-[var(--text)] sm:text-lg">
+              {copy.quote}
+            </blockquote>
             <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 font-mono text-xs text-[var(--muted)]">
               <span className="status-dot" aria-hidden="true" /> {copy.available}
             </div>
@@ -142,9 +145,6 @@ function App() {
           <h2 id="about-title" className="text-3xl font-semibold tracking-tight text-[var(--text)]">{copy.aboutTitle}</h2>
           <p className="max-w-2xl text-lg leading-8 text-[var(--muted)]">{copy.bio}</p>
         </div>
-        <blockquote className="mt-10 border-l-2 border-[var(--accent)] pl-5 font-mono text-base leading-8 text-[var(--text)] sm:text-lg">
-          {copy.quote}
-        </blockquote>
       </section>
 
       <section id="skills" className="mx-auto max-w-6xl border-t border-[var(--border)] py-20" aria-labelledby="skills-title">
