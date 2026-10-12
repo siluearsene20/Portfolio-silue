@@ -82,6 +82,9 @@ function App() {
           </button>
         </div>
       </nav>
+      <div className="quote-marquee mt-5" aria-label={language === 'fr' ? 'Citation personnelle' : 'Personal quote'}>
+        <div className="quote-marquee-track" aria-hidden="true"><span>{copy.quote}</span><span>{copy.quote}</span></div>
+      </div>
 
       <section className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-6xl items-center py-20" aria-labelledby="hero-title">
         <div className="grid w-full items-center gap-16 lg:grid-cols-[1.1fr_0.9fr]">
@@ -142,9 +145,6 @@ function App() {
           <h2 id="about-title" className="text-3xl font-semibold tracking-tight text-[var(--text)]">{copy.aboutTitle}</h2>
           <p className="max-w-2xl text-lg leading-8 text-[var(--muted)]">{copy.bio}</p>
         </div>
-        <blockquote className="mt-8 max-w-3xl border-l border-[var(--accent)]/50 pl-4 font-sans text-sm italic leading-7 text-[var(--muted)] sm:text-base">
-          {copy.quote}
-        </blockquote>
       </section>
 
       <section id="skills" className="mx-auto max-w-6xl border-t border-[var(--border)] py-20" aria-labelledby="skills-title">
@@ -216,6 +216,10 @@ function App() {
         </div>
         <p className="mt-5 font-mono text-sm text-[var(--muted)]">{profile.email} · {profile.location}</p>
       </section>
+
+      <div className="quote-marquee mb-5" aria-label={language === 'fr' ? 'Citation personnelle' : 'Personal quote'}>
+        <div className="quote-marquee-track quote-marquee-track-reverse" aria-hidden="true"><span>{copy.quote}</span><span>{copy.quote}</span></div>
+      </div>
 
       <footer className="mx-auto flex max-w-6xl items-center justify-between border-t border-[var(--border)] py-6 font-mono text-xs text-[var(--muted)]"><span>© {new Date().getFullYear()} — {profile.name}</span><div className="flex items-center gap-4"><span>{copy.footerTagline}</span><a className="inline-flex items-center gap-1.5 transition hover:text-[var(--text)]" href="#top">{copy.backToTop} <ArrowUp size={13} /></a></div></footer>
     </main>
