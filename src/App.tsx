@@ -1,4 +1,4 @@
-import { ArrowRight, Code2, Github, Linkedin, Moon, Sun, Terminal } from 'lucide-react'
+import { ArrowRight, ArrowUp, Code2, Github, Linkedin, Moon, Sun, Terminal } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { profile } from '@/data/profile'
 import { projects } from '@/data/projects'
@@ -43,9 +43,9 @@ function App() {
   }, [])
 
   return (
-    <main className="min-h-screen overflow-hidden px-5 py-6 sm:px-8 lg:px-12">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between" aria-label={language === 'fr' ? 'Navigation principale' : 'Main navigation'}>
-        <a className="font-mono text-sm font-semibold tracking-tight text-[var(--text)]" href="/">
+    <main id="top" className="min-h-screen overflow-hidden px-5 py-6 sm:px-8 lg:px-12">
+      <nav className="sticky top-4 z-10 mx-auto flex max-w-6xl items-center justify-between rounded-xl border border-[var(--border)] bg-[color-mix(in_srgb,var(--bg)_86%,transparent)] px-3 py-2 backdrop-blur-md" aria-label={language === 'fr' ? 'Navigation principale' : 'Main navigation'}>
+        <a className="font-mono text-sm font-semibold tracking-tight text-[var(--text)]" href="#top">
           <span className="text-[var(--accent)]">~/</span>{profile.shortName.toLowerCase().replace(' ', '-')}
         </a>
         <div className="flex items-center gap-3">
@@ -217,7 +217,7 @@ function App() {
         <p className="mt-5 font-mono text-sm text-[var(--muted)]">{profile.email} · {profile.location}</p>
       </section>
 
-      <footer className="mx-auto flex max-w-6xl justify-between border-t border-[var(--border)] py-6 font-mono text-xs text-[var(--muted)]"><span>© {new Date().getFullYear()} — {profile.name}</span><span>{copy.footerTagline}</span></footer>
+      <footer className="mx-auto flex max-w-6xl items-center justify-between border-t border-[var(--border)] py-6 font-mono text-xs text-[var(--muted)]"><span>© {new Date().getFullYear()} — {profile.name}</span><div className="flex items-center gap-4"><span>{copy.footerTagline}</span><a className="inline-flex items-center gap-1.5 transition hover:text-[var(--text)]" href="#top">{copy.backToTop} <ArrowUp size={13} /></a></div></footer>
     </main>
   )
 }
