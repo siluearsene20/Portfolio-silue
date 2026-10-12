@@ -142,6 +142,9 @@ function App() {
           <h2 id="about-title" className="text-3xl font-semibold tracking-tight text-[var(--text)]">{copy.aboutTitle}</h2>
           <p className="max-w-2xl text-lg leading-8 text-[var(--muted)]">{copy.bio}</p>
         </div>
+        <blockquote className="mt-10 border-l-2 border-[var(--accent)] pl-5 font-mono text-base leading-8 text-[var(--text)] sm:text-lg">
+          {copy.quote}
+        </blockquote>
       </section>
 
       <section id="skills" className="mx-auto max-w-6xl border-t border-[var(--border)] py-20" aria-labelledby="skills-title">
