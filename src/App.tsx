@@ -217,11 +217,11 @@ function App() {
         <p className="mt-5 font-mono text-sm text-[var(--muted)]">{profile.email} · {profile.location}</p>
       </section>
 
-      <div className="quote-marquee mb-5" aria-label={language === 'fr' ? 'Citation personnelle' : 'Personal quote'}>
-        <div className="quote-marquee-track quote-marquee-track-reverse" aria-hidden="true"><span>{copy.quote}</span><span>{copy.quote}</span></div>
-      </div>
-
       <footer className="mx-auto flex max-w-6xl items-center justify-between border-t border-[var(--border)] py-6 font-mono text-xs text-[var(--muted)]"><span>© {new Date().getFullYear()} — {profile.name}</span><div className="flex items-center gap-4"><span>{copy.footerTagline}</span><a className="inline-flex items-center gap-1.5 transition hover:text-[var(--text)]" href="#top">{copy.backToTop} <ArrowUp size={13} /></a></div></footer>
+
+      <div className="quote-marquee mt-5" aria-label={language === 'fr' ? 'Citation de fin' : 'Closing quote'}>
+        <div className="quote-marquee-track" aria-hidden="true"><span>{copy.footerQuote}</span><span>{copy.footerQuote}</span></div>
+      </div>
     </main>
   )
 }
