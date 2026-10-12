@@ -44,7 +44,10 @@ function App() {
 
   return (
     <main id="top" className="min-h-screen overflow-hidden px-5 py-6 sm:px-8 lg:px-12">
-      <nav className="sticky top-4 z-10 mx-auto flex max-w-6xl items-center justify-between rounded-xl border border-[var(--border)] bg-[color-mix(in_srgb,var(--bg)_86%,transparent)] px-3 py-2 backdrop-blur-md" aria-label={language === 'fr' ? 'Navigation principale' : 'Main navigation'}>
+      <div className="quote-marquee mb-5" aria-label={language === 'fr' ? 'Citation personnelle' : 'Personal quote'}>
+        <div className="quote-marquee-track" aria-hidden="true"><span>{copy.quote}</span><span>{copy.quote}</span></div>
+      </div>
+      <nav className="sticky top-4 z-10 mx-auto flex max-w-6xl items-center justify-between rounded-xl bg-[color-mix(in_srgb,var(--bg)_86%,transparent)] px-3 py-2 backdrop-blur-md" aria-label={language === 'fr' ? 'Navigation principale' : 'Main navigation'}>
         <a className="font-mono text-sm font-semibold tracking-tight text-[var(--text)]" href="#top">
           <span className="text-[var(--accent)]">~/</span>{profile.shortName.toLowerCase().replace(' ', '-')}
         </a>
@@ -82,9 +85,6 @@ function App() {
           </button>
         </div>
       </nav>
-      <div className="quote-marquee mt-5" aria-label={language === 'fr' ? 'Citation personnelle' : 'Personal quote'}>
-        <div className="quote-marquee-track" aria-hidden="true"><span>{copy.quote}</span><span>{copy.quote}</span></div>
-      </div>
 
       <section className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-6xl items-center py-20" aria-labelledby="hero-title">
         <div className="grid w-full items-center gap-16 lg:grid-cols-[1.1fr_0.9fr]">
