@@ -201,6 +201,8 @@ function App() {
                 </div>
               </div>
               <p className="mt-4 leading-7 text-[var(--muted)]">{translatedProject.description}</p>
+              {translatedProject.theme ? <div className="mt-5 border-l-2 border-[var(--accent)] pl-4"><p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--accent)]">{language === 'fr' ? 'Thème choisi' : 'Selected theme'}</p><p className="mt-2 text-sm leading-6 text-[var(--text)]">{translatedProject.theme}</p></div> : null}
+              {translatedProject.functionalScope ? <p className="mt-4 text-sm leading-6 text-[var(--muted)]"><span className="font-semibold text-[var(--text)]">{language === 'fr' ? 'Lecture fonctionnelle : ' : 'Functional view: '}</span>{translatedProject.functionalScope}</p> : null}
               <ul className="mt-5 space-y-2 text-sm text-[var(--muted)]">
                 {translatedProject.contributions.map((contribution) => <li key={contribution} className="flex gap-2"><span className="text-[var(--success)]">›</span>{contribution}</li>)}
               </ul>

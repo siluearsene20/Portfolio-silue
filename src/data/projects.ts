@@ -3,6 +3,8 @@ export type Project = {
   context: string
   category: string
   description: string
+  theme?: string
+  functionalScope?: string
   contributions: string[]
   technologies: string[]
   featured?: boolean
@@ -14,6 +16,8 @@ export const projects: Project[] = [
     context: 'SIREXE · Tech Lead',
     category: 'Hackathon / Leadership technique',
     description: 'Pilotage technique d’une équipe pendant le hackathon SIREXE, de la compréhension du besoin jusqu’à la structuration de la solution proposée.',
+    theme: 'Industries extractives et énergétiques : quelles infrastructures pour soutenir le développement économique en Afrique ?',
+    functionalScope: 'Fonctionnellement, le défi consiste à partir d’un problème concret des secteurs des mines, du pétrole ou de l’énergie, à identifier les utilisateurs et leurs besoins, puis à construire un prototype opérationnel : parcours clair, données structurées, indicateurs de suivi et démonstration de la valeur de la solution.',
     contributions: ['Coordination technique de l’équipe', 'Répartition et suivi des tâches de développement', 'Accompagnement des choix d’architecture et d’implémentation', 'Contribution au prototypage et à la présentation de la solution'],
     technologies: ['Architecture', 'Prototypage', 'Travail d’équipe'],
     featured: true,

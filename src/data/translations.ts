@@ -70,16 +70,20 @@ export const skillGroupLabels: Record<string, Record<Language, string>> = {
   'Architecture & sécurité': { fr: 'Architecture & sécurité', en: 'Architecture & security' },
 }
 
-export const projectTranslations: Record<string, Record<Language, Pick<Project, 'name' | 'context' | 'category' | 'description' | 'contributions'>>> = {
+export const projectTranslations: Record<string, Record<Language, Pick<Project, 'name' | 'context' | 'category' | 'description' | 'theme' | 'functionalScope' | 'contributions'>>> = {
   'Hackathon SIREXE': {
     fr: {
       name: 'Hackathon SIREXE', context: 'SIREXE · Tech Lead', category: 'Hackathon / Leadership technique',
       description: 'Pilotage technique d’une équipe pendant le hackathon SIREXE, de la compréhension du besoin jusqu’à la structuration de la solution proposée.',
+      theme: 'Industries extractives et énergétiques : quelles infrastructures pour soutenir le développement économique en Afrique ?',
+      functionalScope: 'Fonctionnellement, le défi consiste à partir d’un problème concret des secteurs des mines, du pétrole ou de l’énergie, à identifier les utilisateurs et leurs besoins, puis à construire un prototype opérationnel : parcours clair, données structurées, indicateurs de suivi et démonstration de la valeur de la solution.',
       contributions: ['Coordination technique de l’équipe', 'Répartition et suivi des tâches de développement', 'Accompagnement des choix d’architecture et d’implémentation', 'Contribution au prototypage et à la présentation de la solution'],
     },
     en: {
       name: 'SIREXE Hackathon', context: 'SIREXE · Tech Lead', category: 'Hackathon / Technical leadership',
       description: 'Led the technical work of a team during the SIREXE hackathon, from understanding the challenge to structuring the proposed solution.',
+      theme: 'Extractive and energy industries: what infrastructure is needed to support economic development in Africa?',
+      functionalScope: 'Functionally, the challenge is to start from a concrete issue in mining, petroleum or energy, identify users and needs, then build an operational prototype with clear journeys, structured data, monitoring indicators and a demonstrable value proposition.',
       contributions: ['Technical team coordination', 'Development task breakdown and follow-up', 'Guidance on architecture and implementation choices', 'Contribution to prototyping and solution presentation'],
     },
   },
