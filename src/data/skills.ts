@@ -13,7 +13,7 @@ export const skillGroups: SkillGroup[] = [
   {
     name: 'Backend',
     command: 'backend.json',
-    skills: ['Java / Spring Boot', 'Python / FastAPI', 'Python / Flask', 'PHP / Laravel', 'Odoo / Python / XML', 'API REST'],
+    skills: ['Go', 'Java / Spring Boot', 'Python / FastAPI', 'Python / Flask', 'PHP / Laravel', 'Odoo / Python / XML', 'API REST'],
   },
   {
     name: 'Mobile',
