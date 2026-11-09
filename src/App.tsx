@@ -108,7 +108,7 @@ function App() {
             <div className="mt-10 flex items-center gap-5 text-[var(--muted)]">
               <span className="font-mono text-sm"><span className="text-[var(--accent)]">&gt;</span> {roles[roleIndex]}<span className="cursor" aria-hidden="true">_</span></span>
               <span className="h-4 w-px bg-[var(--border)]" aria-hidden="true" />
-              <a aria-label="GitHub — TODO à remplacer" href="#contact" className="transition hover:text-[var(--text)]"><Github size={18} /></a>
+              <a aria-label="GitHub — siluearsene20" href={profile.social.github} target="_blank" rel="noreferrer" className="transition hover:text-[var(--text)]"><Github size={18} /></a>
               <a aria-label="LinkedIn — TODO à remplacer" href="#contact" className="transition hover:text-[var(--text)]"><Linkedin size={18} /></a>
             </div>
           </div>
@@ -189,13 +189,16 @@ function App() {
         <div className="mt-8 grid gap-5 lg:grid-cols-2">
           {projects.map((project) => {
             const translatedProject = projectTranslations[project.name][language]
-            return <article key={project.name} className="terminal-card p-6">
+            return <article key={project.name} className={`terminal-card p-6 ${project.featured ? 'border-[var(--accent)] bg-[var(--surface-strong)] lg:col-span-2' : ''}`}>
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
                   <p className="font-mono text-xs text-[var(--accent)]">{translatedProject.category}</p>
                   <h3 className="mt-2 text-xl font-semibold text-[var(--text)]">{translatedProject.name}</h3>
                 </div>
-                <span className="rounded-full border border-[var(--border)] px-2.5 py-1 font-mono text-[10px] text-[var(--muted)]">{translatedProject.context}</span>
+                <div className="flex flex-wrap items-center gap-2">
+                  {project.featured ? <span className="rounded-full bg-[var(--accent)] px-2.5 py-1 font-mono text-[10px] font-semibold text-[var(--bg)]">{language === 'fr' ? 'Projet principal' : 'Featured project'}</span> : null}
+                  <span className="rounded-full border border-[var(--border)] px-2.5 py-1 font-mono text-[10px] text-[var(--muted)]">{translatedProject.context}</span>
+                </div>
               </div>
               <p className="mt-4 leading-7 text-[var(--muted)]">{translatedProject.description}</p>
               <ul className="mt-5 space-y-2 text-sm text-[var(--muted)]">

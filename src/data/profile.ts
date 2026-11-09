@@ -28,7 +28,7 @@ export const profile = {
   ],
   bio: 'Développeur fullstack spécialisé dans le développement web et mobile, l’intégration de systèmes d’information et les ERP Odoo. J’aime concevoir des interfaces utiles, intégrer des API et construire des architectures fiables et évolutives.',
   social: {
-    github: 'TODO: à remplacer',
+    github: 'https://github.com/siluearsene20',
     linkedin: 'TODO: à remplacer',
   },
   resumePath: 'TODO: ajouter le PDF dans public/',

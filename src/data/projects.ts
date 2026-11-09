@@ -5,9 +5,19 @@ export type Project = {
   description: string
   contributions: string[]
   technologies: string[]
+  featured?: boolean
 }
 
 export const projects: Project[] = [
+  {
+    name: 'Hackathon SIREXE',
+    context: 'SIREXE · Tech Lead',
+    category: 'Hackathon / Leadership technique',
+    description: 'Pilotage technique d’une équipe pendant le hackathon SIREXE, de la compréhension du besoin jusqu’à la structuration de la solution proposée.',
+    contributions: ['Coordination technique de l’équipe', 'Répartition et suivi des tâches de développement', 'Accompagnement des choix d’architecture et d’implémentation', 'Contribution au prototypage et à la présentation de la solution'],
+    technologies: ['Architecture', 'Prototypage', 'Travail d’équipe'],
+    featured: true,
+  },
   {
     name: 'Plateformes web multi-espaces',
     context: 'ST2I · Depuis juin 2024',

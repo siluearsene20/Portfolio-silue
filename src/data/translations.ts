@@ -71,6 +71,18 @@ export const skillGroupLabels: Record<string, Record<Language, string>> = {
 }
 
 export const projectTranslations: Record<string, Record<Language, Pick<Project, 'name' | 'context' | 'category' | 'description' | 'contributions'>>> = {
+  'Hackathon SIREXE': {
+    fr: {
+      name: 'Hackathon SIREXE', context: 'SIREXE · Tech Lead', category: 'Hackathon / Leadership technique',
+      description: 'Pilotage technique d’une équipe pendant le hackathon SIREXE, de la compréhension du besoin jusqu’à la structuration de la solution proposée.',
+      contributions: ['Coordination technique de l’équipe', 'Répartition et suivi des tâches de développement', 'Accompagnement des choix d’architecture et d’implémentation', 'Contribution au prototypage et à la présentation de la solution'],
+    },
+    en: {
+      name: 'SIREXE Hackathon', context: 'SIREXE · Tech Lead', category: 'Hackathon / Technical leadership',
+      description: 'Led the technical work of a team during the SIREXE hackathon, from understanding the challenge to structuring the proposed solution.',
+      contributions: ['Technical team coordination', 'Development task breakdown and follow-up', 'Guidance on architecture and implementation choices', 'Contribution to prototyping and solution presentation'],
+    },
+  },
   'Plateformes web multi-espaces': {
     fr: {
       name: 'Plateformes web multi-espaces', context: 'ST2I · Depuis juin 2024', category: 'Full Stack',
