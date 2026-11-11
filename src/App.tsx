@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { profile } from '@/data/profile'
 import { projects } from '@/data/projects'
 import { skillGroups } from '@/data/skills'
-import { projectTranslations, skillGroupLabels, type Language, ui } from '@/data/translations'
+import { educationDegrees, educationPeriods, projectTranslations, skillGroupLabels, technologyLabels, type Language, ui } from '@/data/translations'
 
 type Theme = 'dark' | 'light'
 
@@ -114,7 +114,7 @@ function App() {
           </div>
 
           <div className="mx-auto w-full max-w-md">
-            <div className="terminal-card" aria-label="Aperçu de terminal">
+            <div className="terminal-card" aria-label={language === 'fr' ? 'Aperçu de terminal' : 'Terminal preview'}>
             <div className="terminal-bar">
               <span className="terminal-dot bg-[#ff5f57]" />
               <span className="terminal-dot bg-[#febc2e]" />
@@ -171,8 +171,8 @@ function App() {
         <div className="mt-8 grid gap-4 md:grid-cols-3">
           {profile.education.map((education) => (
             <article key={`${education.degree}-${education.period}`} className="terminal-card p-5">
-              <p className="font-mono text-xs text-[var(--accent)]">{education.period}</p>
-              <h3 className="mt-4 text-lg font-semibold text-[var(--text)]">{education.degree}</h3>
+              <p className="font-mono text-xs text-[var(--accent)]">{educationPeriods[language][education.period] ?? education.period}</p>
+              <h3 className="mt-4 text-lg font-semibold text-[var(--text)]">{educationDegrees[language][education.degree] ?? education.degree}</h3>
               {'field' in education && education.field ? <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{language === 'en' ? copy.educationField : education.field}</p> : null}
               {'school' in education && education.school ? <p className="mt-4 font-mono text-xs text-[var(--muted)]">{education.school}</p> : null}
             </article>
@@ -207,7 +207,7 @@ function App() {
                 {translatedProject.contributions.map((contribution) => <li key={contribution} className="flex gap-2"><span className="text-[var(--success)]">›</span>{contribution}</li>)}
               </ul>
               <div className="mt-5 flex flex-wrap gap-2">
-                {project.technologies.map((technology) => <span key={technology} className="rounded-md bg-[var(--surface-strong)] px-2.5 py-1 font-mono text-xs text-[var(--text)]">{technology}</span>)}
+                {project.technologies.map((technology) => <span key={technology} className="rounded-md bg-[var(--surface-strong)] px-2.5 py-1 font-mono text-xs text-[var(--text)]">{technologyLabels[technology]?.[language] ?? technology}</span>)}
               </div>
             </article>
           })}

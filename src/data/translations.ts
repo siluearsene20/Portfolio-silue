@@ -70,6 +70,40 @@ export const skillGroupLabels: Record<string, Record<Language, string>> = {
   'Architecture & sécurité': { fr: 'Architecture & sécurité', en: 'Architecture & security' },
 }
 
+export const educationDegrees: Record<Language, Record<string, string>> = {
+  fr: {
+    Master: 'Master',
+    Licence: 'Licence',
+    'Baccalauréat scientifique': 'Baccalauréat scientifique',
+  },
+  en: {
+    Master: 'Master’s degree',
+    Licence: 'Bachelor’s degree',
+    'Baccalauréat scientifique': 'Scientific Baccalaureate',
+  },
+}
+
+export const educationPeriods: Record<Language, Record<string, string>> = {
+  fr: {
+    'Sept. 2021 – Août 2023': 'Sept. 2021 – Août 2023',
+    'Sept. 2018 – Août 2021': 'Sept. 2018 – Août 2021',
+    'Sept. 2017 – Juil. 2018': 'Sept. 2017 – Juil. 2018',
+  },
+  en: {
+    'Sept. 2021 – Août 2023': 'Sep. 2021 – Aug. 2023',
+    'Sept. 2018 – Août 2021': 'Sep. 2018 – Aug. 2021',
+    'Sept. 2017 – Juil. 2018': 'Sep. 2017 – Jul. 2018',
+  },
+}
+
+export const technologyLabels: Record<string, Record<Language, string>> = {
+  Architecture: { fr: 'Architecture', en: 'Architecture' },
+  Prototypage: { fr: 'Prototypage', en: 'Prototyping' },
+  'Travail d’équipe': { fr: 'Travail d’équipe', en: 'Teamwork' },
+  Données: { fr: 'Données', en: 'Data' },
+  'Application web': { fr: 'Application web', en: 'Web application' },
+}
+
 export const projectTranslations: Record<string, Record<Language, Pick<Project, 'name' | 'context' | 'category' | 'description' | 'theme' | 'functionalScope' | 'contributions'>>> = {
   'Hackathon SIREXE': {
     fr: {
