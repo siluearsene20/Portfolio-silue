@@ -1,5 +1,7 @@
 import { ArrowRight, ArrowUp, Code2, Github, Linkedin, Moon, Sun, Terminal } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import gsap from 'gsap'
+import { useEffect, useRef, useState } from 'react'
+import { ThreeBackdrop } from '@/components/ThreeBackdrop'
 import { profile } from '@/data/profile'
 import { projects } from '@/data/projects'
 import { skillGroups } from '@/data/skills'
@@ -10,6 +12,7 @@ type Theme = 'dark' | 'light'
 const roles = ['React Developer', 'Angular Developer', 'Spring Boot Developer', 'Software Engineer']
 
 function App() {
+  const appRef = useRef<HTMLElement>(null)
   const [theme, setTheme] = useState<Theme>(() => {
     const savedTheme = localStorage.getItem('portfolio-theme')
     return savedTheme === 'light' ? 'light' : 'dark'
@@ -42,12 +45,57 @@ function App() {
     return () => window.clearInterval(intervalId)
   }, [])
 
+  useEffect(() => {
+    const root = appRef.current
+    if (!root || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const heroItems = Array.from(root.querySelectorAll<HTMLElement>('[data-hero-item]'))
+    const terminal = root.querySelector<HTMLElement>('[data-hero-terminal]')
+    const tiltCards = Array.from(root.querySelectorAll<HTMLElement>('[data-tilt]'))
+    const animatedElements = [...heroItems, ...(terminal ? [terminal] : [])]
+    const cleanups: Array<() => void> = []
+
+    try {
+      gsap.fromTo(heroItems, { y: 24, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.07, ease: 'power3.out', delay: 0.12 })
+      if (terminal) gsap.fromTo(terminal, { x: 34, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 1, ease: 'power3.out', delay: 0.2 })
+    } catch {
+      animatedElements.forEach((element) => {
+        element.style.opacity = '1'
+        element.style.transform = 'none'
+      })
+    }
+
+    tiltCards.forEach((element) => {
+      const onMove = (event: MouseEvent) => {
+        const bounds = element.getBoundingClientRect()
+        const x = (event.clientX - bounds.left) / bounds.width - 0.5
+        const y = (event.clientY - bounds.top) / bounds.height - 0.5
+        gsap.to(element, { rotateX: -y * 3, rotateY: x * 4, transformPerspective: 900, duration: 0.35, ease: 'power2.out', overwrite: true })
+      }
+      const onLeave = () => gsap.to(element, { rotateX: 0, rotateY: 0, duration: 0.5, ease: 'power2.out' })
+      element.addEventListener('mousemove', onMove)
+      element.addEventListener('mouseleave', onLeave)
+      cleanups.push(() => {
+        element.removeEventListener('mousemove', onMove)
+        element.removeEventListener('mouseleave', onLeave)
+        gsap.killTweensOf(element)
+      })
+    })
+
+    return () => {
+      gsap.killTweensOf(animatedElements)
+      cleanups.forEach((cleanup) => cleanup())
+    }
+  }, [])
+
   return (
-    <main id="top" className="min-h-screen overflow-hidden px-5 py-6 sm:px-8 lg:px-12">
-      <div className="quote-marquee mb-5" aria-label={language === 'fr' ? 'Citation personnelle' : 'Personal quote'}>
+    <main ref={appRef} id="top" className="relative min-h-screen overflow-hidden px-5 py-6 sm:px-8 lg:px-12">
+      <ThreeBackdrop />
+      <div className="portfolio-content relative z-10">
+      <div className="quote-marquee mb-5" data-reveal aria-label={language === 'fr' ? 'Citation personnelle' : 'Personal quote'}>
         <div className="quote-marquee-track" aria-hidden="true"><span>{copy.quote}</span><span>{copy.quote}</span></div>
       </div>
-      <nav className="sticky top-4 z-10 mx-auto flex max-w-6xl items-center justify-between rounded-xl bg-[color-mix(in_srgb,var(--bg)_86%,transparent)] px-3 py-2 backdrop-blur-md" aria-label={language === 'fr' ? 'Navigation principale' : 'Main navigation'}>
+      <nav className="sticky top-4 z-10 mx-auto flex max-w-6xl items-center justify-between rounded-xl bg-[color-mix(in_srgb,var(--bg)_86%,transparent)] px-3 py-2 backdrop-blur-md" data-reveal aria-label={language === 'fr' ? 'Navigation principale' : 'Main navigation'}>
         <a className="font-mono text-sm font-semibold tracking-tight text-[var(--text)]" href="#top">
           <span className="text-[var(--accent)]">~/</span>{profile.shortName.toLowerCase().replace(' ', '-')}
         </a>
@@ -89,23 +137,23 @@ function App() {
       <section className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-6xl items-center py-20" aria-labelledby="hero-title">
         <div className="grid w-full items-center gap-16 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
-            <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 font-mono text-xs text-[var(--muted)]">
+            <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 font-mono text-xs text-[var(--muted)]" data-hero-item>
               <span className="status-dot" aria-hidden="true" /> {copy.available}
             </div>
-            <p className="mb-4 font-mono text-sm text-[var(--accent)]">$ whoami</p>
-            <h1 id="hero-title" className="max-w-3xl text-5xl font-semibold tracking-[-0.06em] text-[var(--text)] sm:text-7xl">
+            <p className="mb-4 font-mono text-sm text-[var(--accent)]" data-hero-item>$ whoami</p>
+            <h1 id="hero-title" className="max-w-3xl text-5xl font-semibold tracking-[-0.06em] text-[var(--text)] sm:text-7xl" data-hero-item>
               {profile.name.split(' ').slice(0, 2).join(' ')} <span className="text-gradient">{profile.name.split(' ').slice(2).join(' ')}</span>
             </h1>
-            <p className="mt-7 max-w-2xl text-lg leading-8 text-[var(--muted)]">
+            <p className="mt-7 max-w-2xl text-lg leading-8 text-[var(--muted)]" data-hero-item>
               {localizedTitle} — {localizedSubtitle}. {copy.heroDescription}
             </p>
-            <div className="mt-8 flex flex-wrap items-center gap-4">
+            <div className="mt-8 flex flex-wrap items-center gap-4" data-hero-item>
               <a className="button-primary" href="#skills">
                 {copy.seeSkills} <ArrowRight size={16} />
               </a>
               <a className="button-secondary" href="#contact">{copy.contactMe}</a>
             </div>
-            <div className="mt-10 flex items-center gap-5 text-[var(--muted)]">
+            <div className="mt-10 flex items-center gap-5 text-[var(--muted)]" data-hero-item>
               <span className="font-mono text-sm"><span className="text-[var(--accent)]">&gt;</span> {roles[roleIndex]}<span className="cursor" aria-hidden="true">_</span></span>
               <span className="h-4 w-px bg-[var(--border)]" aria-hidden="true" />
               <a aria-label="GitHub — siluearsene20" href={profile.social.github} target="_blank" rel="noreferrer" className="transition hover:text-[var(--text)]"><Github size={18} /></a>
@@ -113,8 +161,8 @@ function App() {
             </div>
           </div>
 
-          <div className="mx-auto w-full max-w-md">
-            <div className="terminal-card" aria-label={language === 'fr' ? 'Aperçu de terminal' : 'Terminal preview'}>
+          <div className="mx-auto w-full max-w-md" data-hero-terminal>
+            <div className="terminal-card" data-tilt aria-label={language === 'fr' ? 'Aperçu de terminal' : 'Terminal preview'}>
             <div className="terminal-bar">
               <span className="terminal-dot bg-[#ff5f57]" />
               <span className="terminal-dot bg-[#febc2e]" />
@@ -139,7 +187,7 @@ function App() {
         </div>
       </section>
 
-      <section id="about" className="mx-auto max-w-6xl border-t border-[var(--border)] py-20" aria-labelledby="about-title">
+      <section id="about" className="mx-auto max-w-6xl border-t border-[var(--border)] py-20" data-reveal aria-labelledby="about-title">
         <p className="font-mono text-sm text-[var(--accent)]">{copy.aboutCommand}</p>
         <div className="mt-5 grid gap-8 md:grid-cols-[0.8fr_1.2fr]">
           <h2 id="about-title" className="text-3xl font-semibold tracking-tight text-[var(--text)]">{copy.aboutTitle}</h2>
@@ -147,7 +195,7 @@ function App() {
         </div>
       </section>
 
-      <section id="skills" className="mx-auto max-w-6xl border-t border-[var(--border)] py-20" aria-labelledby="skills-title">
+      <section id="skills" className="mx-auto max-w-6xl border-t border-[var(--border)] py-20" data-reveal aria-labelledby="skills-title">
         <p className="font-mono text-sm text-[var(--accent)]">$ cat skills.json</p>
         <h2 id="skills-title" className="mt-4 text-3xl font-semibold tracking-tight text-[var(--text)]">{copy.skillsTitle}</h2>
         <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -165,7 +213,7 @@ function App() {
         </div>
       </section>
 
-      <section id="education" className="mx-auto max-w-6xl border-t border-[var(--border)] py-20" aria-labelledby="education-title">
+      <section id="education" className="mx-auto max-w-6xl border-t border-[var(--border)] py-20" data-reveal aria-labelledby="education-title">
         <p className="font-mono text-sm text-[var(--accent)]">$ cat education.json</p>
         <h2 id="education-title" className="mt-4 text-3xl font-semibold tracking-tight text-[var(--text)]">{copy.educationTitle}</h2>
         <div className="mt-8 grid gap-4 md:grid-cols-3">
@@ -180,7 +228,7 @@ function App() {
         </div>
       </section>
 
-      <section id="projects" className="mx-auto max-w-6xl border-t border-[var(--border)] py-20" aria-labelledby="projects-title">
+      <section id="projects" className="mx-auto max-w-6xl border-t border-[var(--border)] py-20" data-reveal aria-labelledby="projects-title">
         <p className="font-mono text-sm text-[var(--accent)]">$ ls projects/</p>
         <div className="mt-4 flex flex-wrap items-end justify-between gap-4">
           <h2 id="projects-title" className="text-3xl font-semibold tracking-tight text-[var(--text)]">{copy.projectsTitle}</h2>
@@ -214,7 +262,7 @@ function App() {
         </div>
       </section>
 
-      <section id="contact" className="mx-auto max-w-6xl border-t border-[var(--border)] py-16" aria-labelledby="contact-title">
+      <section id="contact" className="mx-auto max-w-6xl border-t border-[var(--border)] py-16" data-reveal aria-labelledby="contact-title">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div><p className="font-mono text-sm text-[var(--accent)]">$ ./contact.sh</p><h2 id="contact-title" className="mt-4 text-3xl font-semibold tracking-tight text-[var(--text)]">{copy.contactTitle}</h2></div>
           <a className="button-secondary" href={`mailto:${profile.email}`}>{copy.sendEmail} <Code2 size={16} /></a>
@@ -226,6 +274,7 @@ function App() {
 
       <div className="quote-marquee mt-5" aria-label={language === 'fr' ? 'Citation de fin' : 'Closing quote'}>
         <div className="quote-marquee-track" aria-hidden="true"><span>{copy.footerQuote}</span><span>{copy.footerQuote}</span></div>
+      </div>
       </div>
     </main>
   )
