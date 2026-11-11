@@ -50,6 +50,7 @@ function App() {
     if (!root || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const tiltCards = Array.from(root.querySelectorAll<HTMLElement>('[data-tilt]'))
+    const magneticItems = Array.from(root.querySelectorAll<HTMLElement>('[data-magnetic]'))
     const revealItems = Array.from(root.querySelectorAll<HTMLElement>('[data-reveal]'))
     const cleanups: Array<() => void> = []
 
@@ -61,6 +62,30 @@ function App() {
         gsap.to(element, { rotateX: -y * 3, rotateY: x * 4, transformPerspective: 900, duration: 0.35, ease: 'power2.out', overwrite: true })
       }
       const onLeave = () => gsap.to(element, { rotateX: 0, rotateY: 0, duration: 0.5, ease: 'power2.out' })
+      element.addEventListener('mousemove', onMove)
+      element.addEventListener('mouseleave', onLeave)
+      cleanups.push(() => {
+        element.removeEventListener('mousemove', onMove)
+        element.removeEventListener('mouseleave', onLeave)
+        gsap.killTweensOf(element)
+      })
+    })
+
+    const onPointerMove = (event: PointerEvent) => {
+      root.style.setProperty('--pointer-x', `${event.clientX}px`)
+      root.style.setProperty('--pointer-y', `${event.clientY}px`)
+    }
+    root.addEventListener('pointermove', onPointerMove, { passive: true })
+    cleanups.push(() => root.removeEventListener('pointermove', onPointerMove))
+
+    magneticItems.forEach((element) => {
+      const onMove = (event: MouseEvent) => {
+        const bounds = element.getBoundingClientRect()
+        const x = (event.clientX - (bounds.left + bounds.width / 2)) * 0.16
+        const y = (event.clientY - (bounds.top + bounds.height / 2)) * 0.16
+        gsap.to(element, { x, y, duration: 0.35, ease: 'power3.out', overwrite: true })
+      }
+      const onLeave = () => gsap.to(element, { x: 0, y: 0, duration: 0.65, ease: 'elastic.out(1, 0.45)' })
       element.addEventListener('mousemove', onMove)
       element.addEventListener('mouseleave', onLeave)
       cleanups.push(() => {
@@ -92,6 +117,7 @@ function App() {
   return (
     <main ref={appRef} id="top" className="relative min-h-screen overflow-hidden px-5 py-6 sm:px-8 lg:px-12">
       <ThreeBackdrop />
+      <div className="cursor-glow" aria-hidden="true" />
       <div className="portfolio-content relative z-10">
       <div className="quote-marquee mb-5" data-reveal aria-label={language === 'fr' ? 'Citation personnelle' : 'Personal quote'}>
         <div className="quote-marquee-track" aria-hidden="true"><span>{copy.quote}</span><span>{copy.quote}</span></div>
@@ -149,10 +175,10 @@ function App() {
               {localizedTitle} — {localizedSubtitle}. {copy.heroDescription}
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4" data-hero-item>
-              <a className="button-primary" href="#skills">
+              <a className="button-primary" data-magnetic href="#skills">
                 {copy.seeSkills} <ArrowRight size={16} />
               </a>
-              <a className="button-secondary" href="#contact">{copy.contactMe}</a>
+              <a className="button-secondary" data-magnetic href="#contact">{copy.contactMe}</a>
             </div>
             <div className="mt-10 flex items-center gap-5 text-[var(--muted)]" data-hero-item>
               <span className="font-mono text-sm"><span className="text-[var(--accent)]">&gt;</span> {roles[roleIndex]}<span className="cursor" aria-hidden="true">_</span></span>
@@ -201,7 +227,7 @@ function App() {
         <h2 id="skills-title" className="mt-4 text-3xl font-semibold tracking-tight text-[var(--text)]">{copy.skillsTitle}</h2>
         <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {skillGroups.map((group) => (
-            <article key={group.name} className="terminal-card p-5">
+            <article key={group.name} className="terminal-card p-5" data-tilt>
               <div className="mb-4 flex items-center justify-between gap-4 font-mono text-xs text-[var(--muted)]">
                 <span className="text-[var(--accent)]">{skillGroupLabels[group.name][language]}</span>
                 <span>{group.command}</span>
@@ -219,7 +245,7 @@ function App() {
         <h2 id="education-title" className="mt-4 text-3xl font-semibold tracking-tight text-[var(--text)]">{copy.educationTitle}</h2>
         <div className="mt-8 grid gap-4 md:grid-cols-3">
           {profile.education.map((education) => (
-            <article key={`${education.degree}-${education.period}`} className="terminal-card p-5">
+            <article key={`${education.degree}-${education.period}`} className="terminal-card p-5" data-tilt>
               <p className="font-mono text-xs text-[var(--accent)]">{educationPeriods[language][education.period] ?? education.period}</p>
               <h3 className="mt-4 text-lg font-semibold text-[var(--text)]">{educationDegrees[language][education.degree] ?? education.degree}</h3>
               {'field' in education && education.field ? <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{language === 'en' ? copy.educationField : education.field}</p> : null}
@@ -238,7 +264,7 @@ function App() {
         <div className="mt-8 grid gap-5 lg:grid-cols-2">
           {projects.map((project) => {
             const translatedProject = projectTranslations[project.name][language]
-            return <article key={project.name} className={`terminal-card p-6 ${project.featured ? 'border-[var(--accent)] bg-[var(--surface-strong)] lg:col-span-2' : ''}`}>
+            return <article key={project.name} className={`terminal-card p-6 ${project.featured ? 'border-[var(--accent)] bg-[var(--surface-strong)] lg:col-span-2' : ''}`} data-tilt>
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
                   <p className="font-mono text-xs text-[var(--accent)]">{translatedProject.category}</p>
@@ -266,7 +292,7 @@ function App() {
       <section id="contact" className="mx-auto max-w-6xl border-t border-[var(--border)] py-16" data-reveal aria-labelledby="contact-title">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div><p className="font-mono text-sm text-[var(--accent)]">$ ./contact.sh</p><h2 id="contact-title" className="mt-4 text-3xl font-semibold tracking-tight text-[var(--text)]">{copy.contactTitle}</h2></div>
-          <a className="button-secondary" href={`mailto:${profile.email}`}>{copy.sendEmail} <Code2 size={16} /></a>
+          <a className="button-secondary" data-magnetic href={`mailto:${profile.email}`}>{copy.sendEmail} <Code2 size={16} /></a>
         </div>
         <p className="mt-5 font-mono text-sm text-[var(--muted)]">{profile.email} · {profile.location}</p>
       </section>
