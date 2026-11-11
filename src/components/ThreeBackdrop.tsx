@@ -50,19 +50,19 @@ export function ThreeBackdrop() {
     const particleGeometry = new THREE.BufferGeometry()
     particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
     particleGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3))
-    const particleMaterial = new THREE.PointsMaterial({ size: 0.025, vertexColors: true, transparent: true, opacity: 0.72, depthWrite: false })
+    const particleMaterial = new THREE.PointsMaterial({ size: 0.038, vertexColors: true, transparent: true, opacity: 0.92, depthWrite: false })
     const particles = new THREE.Points(particleGeometry, particleMaterial)
     group.add(particles)
 
     const orb = new THREE.Mesh(
       new THREE.IcosahedronGeometry(1.25, 2),
-      new THREE.MeshBasicMaterial({ color: '#55d6ff', wireframe: true, transparent: true, opacity: 0.13 }),
+      new THREE.MeshBasicMaterial({ color: '#55d6ff', wireframe: true, transparent: true, opacity: 0.28 }),
     )
     group.add(orb)
 
     const halo = new THREE.Mesh(
       new THREE.TorusGeometry(1.8, 0.006, 10, 160),
-      new THREE.MeshBasicMaterial({ color: '#a78bfa', transparent: true, opacity: 0.22 }),
+      new THREE.MeshBasicMaterial({ color: '#a78bfa', transparent: true, opacity: 0.4 }),
     )
     halo.rotation.x = Math.PI / 2.4
     group.add(halo)
@@ -86,6 +86,8 @@ export function ThreeBackdrop() {
       orb.rotation.x = prefersReducedMotion ? 0.25 : frame * 0.00025
       orb.rotation.y = prefersReducedMotion ? -0.35 : frame * 0.00032
       halo.rotation.z = prefersReducedMotion ? 0.35 : frame * 0.00018
+      const pulse = prefersReducedMotion ? 1 : 1 + Math.sin(frame * 0.018) * 0.035
+      group.scale.setScalar(pulse)
       renderer.render(scene, camera)
       frame += 1
       animationFrame = window.requestAnimationFrame(render)

@@ -49,21 +49,9 @@ function App() {
     const root = appRef.current
     if (!root || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
-    const heroItems = Array.from(root.querySelectorAll<HTMLElement>('[data-hero-item]'))
-    const terminal = root.querySelector<HTMLElement>('[data-hero-terminal]')
     const tiltCards = Array.from(root.querySelectorAll<HTMLElement>('[data-tilt]'))
-    const animatedElements = [...heroItems, ...(terminal ? [terminal] : [])]
+    const revealItems = Array.from(root.querySelectorAll<HTMLElement>('[data-reveal]'))
     const cleanups: Array<() => void> = []
-
-    try {
-      gsap.fromTo(heroItems, { y: 24, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.07, ease: 'power3.out', delay: 0.12 })
-      if (terminal) gsap.fromTo(terminal, { x: 34, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 1, ease: 'power3.out', delay: 0.2 })
-    } catch {
-      animatedElements.forEach((element) => {
-        element.style.opacity = '1'
-        element.style.transform = 'none'
-      })
-    }
 
     tiltCards.forEach((element) => {
       const onMove = (event: MouseEvent) => {
@@ -82,9 +70,22 @@ function App() {
       })
     })
 
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return
+        gsap.to(entry.target, { y: 0, autoAlpha: 1, duration: 0.75, ease: 'power3.out', overwrite: true })
+        revealObserver.unobserve(entry.target)
+      })
+    }, { threshold: 0.16 })
+    revealItems.forEach((element, index) => {
+      gsap.set(element, { y: 26, autoAlpha: index < 2 ? 1 : 0 })
+      revealObserver.observe(element)
+    })
+
     return () => {
-      gsap.killTweensOf(animatedElements)
       cleanups.forEach((cleanup) => cleanup())
+      revealObserver.disconnect()
+      gsap.killTweensOf(revealItems)
     }
   }, [])
 
@@ -134,7 +135,7 @@ function App() {
         </div>
       </nav>
 
-      <section className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-6xl items-center py-20" aria-labelledby="hero-title">
+      <section className="hero-stage mx-auto flex min-h-[calc(100vh-5rem)] max-w-6xl items-center py-20" aria-labelledby="hero-title">
         <div className="grid w-full items-center gap-16 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
             <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 font-mono text-xs text-[var(--muted)]" data-hero-item>
